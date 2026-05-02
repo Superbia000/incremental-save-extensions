@@ -1,0 +1,5 @@
+{
+  "name": "Incremental Save",
+  "version": "1.0",
+  "description": "Appends chat files instead of overwriting, and proxies external images."
+}
