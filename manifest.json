@@ -1,6 +1,5 @@
 {
-  "display_name": "Incremental Save"
-  "name": "Incremental Save",
+  "display_name": "Incremental Save",
   "version": "1.0.1",
   "js": "index.js",
   "author": "Superbia000",
