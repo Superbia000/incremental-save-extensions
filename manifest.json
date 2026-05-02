@@ -2,5 +2,9 @@
   "display_name": "Incremental Save"
   "name": "Incremental Save",
   "version": "1.0.1",
-  "description": "Appends chat files instead of overwriting, and proxies external images."
+  "js": "index.js",
+  "author": "Superbia000",
+  "homePage": "https://github.com/Superbia000/incremental-save-extensions",
+  "description": "Appends chat files instead of overwriting, and proxies external images.",
+  "auto_update": true
 }
