@@ -1,3 +1,11 @@
+// --- 啟動時的 UI 提示 ---
+setTimeout(() => {
+    if (window.toastr) {
+        window.toastr.success('🚀 增量儲存與快取擴充已成功載入並監聽中！', 'Incremental Save', { timeOut: 3000 });
+    }
+    console.log('[Incremental Save] 前端擴充已啟動');
+}, 2000); // 延遲 2 秒等待 ST 介面載入完畢
+
 // --- 1. 攔截圖片讀取並進行代理 ---
 function hookDOMPurify() {
     if (window.DOMPurify && window.DOMPurify.addHook) {
@@ -81,16 +89,21 @@ window.fetch = async function (url, options) {
 
                         const response = await originalFetch(pluginUrl, newOptions);
                         if (response.ok) {
-                            console.log(`[Incremental Save] 成功追加 ${newMessages.length} 條訊息`);
+                            // UI 成功提示 (顯示持續時間 2 秒，避免頻繁發言時干擾)
+                            if (window.toastr) {
+                                window.toastr.info(`⚡ 觸發極速增量儲存 (+${newMessages.length} 條)`, 'Incremental Save', { timeOut: 2000 });
+                            }
                             lastSavedLog = JSON.parse(JSON.stringify(currentLog));
                             return response; // 攔截成功，直接返回略過全量覆寫
-                        } else {
-                            console.warn('[Incremental Save] 追加失敗，回退至全量儲存。');
                         }
+                    } else {
+                        // 這是正常情況 (例如修改舊訊息、滑動切換回覆)，會自動執行全量儲存
+                        // 為了不打擾使用者，這裡不彈出 toastr，僅保留 console log
+                        console.log('[Incremental Save] 檢測到歷史訊息變更，執行標準全量儲存。');
                     }
                 }
 
-                // 未觸發追加條件（例如編輯訊息、剛開啟 ST），則執行常規的全量儲存
+                // 常規全量儲存
                 const response = await originalFetch(url, options);
                 if (response.ok && currentLog) {
                     lastSavedLog = JSON.parse(JSON.stringify(currentLog));
